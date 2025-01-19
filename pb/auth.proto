@@ -1,4 +1,4 @@
-// Протокол котракта auth сервиса
+// Протокол контракта auth сервиса
 syntax = "proto3";
 
 package auth;
@@ -6,7 +6,78 @@ package auth;
 // Сервис аутентификации
 service AuthService {
     // Запрос и ответ для регистрации пользователя
-    rpc RegisterUser(RegisterUserRequest) returns (RegisterUserResponse);
+    rpc Register(RegisterRequest) returns (RegisterResponse);
 
+    // Аутентификация пользователя
+    rpc Login(LoginRequst) returns (LoginResponse);
 
+    // Валидация JWT-токена
+    rpc ValidateToken(ValidateTokenRequest) returns (ValidateTokenResponse);
+
+    // Обновление пароля
+    rpc UpdatePassword(UpdatePasswordRequest) returns (UpdatePasswordResponse);
+
+    // Восстановление пароля по email
+    rpc ForgotPassword(ForgotPasswordRequest) returns (ForgotPasswordResponse);
+}
+
+// Запрос на регистрацию
+message RegisterRequest {
+    string username = 1;
+    string password = 2;
+    string email = 3;
+}
+
+// Ответ на регистрацию
+message RegisterResponse {
+    int64 userId = 1; 
+    string message = 2; // Сообщение об успешной регистрации
+}
+
+// Запрос на логин 
+message LoginRequst {
+    string username = 1; 
+    string password = 2;
+}
+
+// Ответ на логин
+message LoginResponse {
+    string accessToken = 1;  // JWT токен доступа пользователя
+    string refreshToken = 2;  // JWT токен для обновления 
+    string message = 3;  // Сообщение о статуса входа
+} 
+
+// Запрос на валидацию токена
+message ValidateTokenRequest {
+    string Token = 1;  // JWT токен для проверки
+}
+
+// Ответ на валидацю токена
+message ValidateTokenResponse {
+    bool valid = 1;  // Статус валидности токена
+    string message = 2;  // Сообщение о проверке валидности
+}
+
+// Запрос на обновление пароля 
+message UpdatePasswordRequest {
+    int64 userId = 1;
+    string oldPassword = 2;
+    string newPassword = 3;
+}
+
+// Ответ на обновление пароля 
+message UpdatePasswordResponse {
+    bool success = 1;  // Статус обновления пароля
+    string message = 2;  // Сообщение о результате
+}
+
+// Запрос на восстановление пароля 
+message ForgotPasswordRequest {
+    string email = 1;
+}
+
+// Ответ на восстановление пароля 
+message ForgotPasswordResponse {
+    bool success = 1;  // Статус успеха операции
+    str message = 2;  // Сообщение о результате 
 }

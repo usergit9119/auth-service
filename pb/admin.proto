@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+package admin;
+
+// Сервис управления Админкой
+service AdminService {
+    // Является ли пользователь админом
+    rpc IsAdmin(IsAdminRequest) returns (IsAdminResponse);
+
+    // Назначить пользователя админом
+    rpc AssignAdmin(AssignAdminRequest) returns (AssignAdminResponse);
+
+    // Удалить админку 
+    rpc RevokeAdmin(RevokeAdminRequest) returns (RevokeAdminResponse);
+}
+
+// Запрос для проверки админки
+message IsAdminRequest {
+    int64 userId = 1;
+}
+
+// Ответ на проверку админа
+message IsAdminResponse {
+    bool is_admin = 1;
+}
+
+// запрос на выдачу админки
+message AssignAdminRequest {
+    int64 userId = 1;
+}
+
+// Ответ на выдачу админки
+message AssignAdminResponse {
+    bool success = 1;
+}
+
+// Запрос на удаление админки 
+message RevokeAdminRequest {
+    int64 userId = 1;
+}
+
+// Ответ на удаление админки 
+message RevokeAdminResponse {
+    bool success = 1;
+}

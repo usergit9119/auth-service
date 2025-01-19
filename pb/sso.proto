@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+package sso;
+
+import "google/protobuf/empty.proto";
+
+
+service SSOService {
+    // Инициализация SSO-процесса
+    rpc StartSSO(StartSSORequest) returns (StartSSOResponse);
+
+    // Завершение SSO-процесса
+    rpc CompleteSSO(CompleteSSORequst) returns (CompleteSSOResponse);
+
+    // Получение списка доступных провайдеров 
+    rpc GetProviders(google.protobuf.Empty) returns (ProvidersResponse);
+}
+
+// Запрос StartSSO
+message StartSSORequest {
+    string provider = 1;  // Название провайдера
+    string callback_url = 2; // URL для редиркета после аутентификации 
+}
+
+// Ответ StartSSO
+message StartSSOResponse {
+    string auth_url = 1;
+    string state = 2;
+}
+
+// Запрос CompleteSSO
+message CompleteSSORequst {
+    string provider = 1;  // Название провайдера
+    string code = 2;  // Код авторизации
+    string state = 3;  // Идентификатор сессии
+} 
+
+// Ответ CompleteSSO 
+message CompleteSSOResponse {
+    string token = 1;  // JWT-токен
+    string userId = 2;  // ID пользователя
+    string email = 3; 
+    string user_name = 4;  // Имя пользователя полученного от провайдера
+    string provider = 5;  
+}
+
+// Получения списка провайдеров 
+message ProvidersResponse {
+    repeated Provider providers = 1;
+}
+
+// Сообщение для описания провайдера
+message Provider {
+    string name = 1;  
+    string logo_url = 2;  // URL логотипа провайдера
+    string auth_url = 3;  // URL для авторизации этого провайдера
+}
