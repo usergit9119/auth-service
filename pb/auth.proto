@@ -1,0 +1,12 @@
+// Протокол котракта auth сервиса
+syntax = "proto3";
+
+package auth;
+
+// Сервис аутентификации
+service AuthService {
+    // Запрос и ответ для регистрации пользователя
+    rpc RegisterUser(RegisterUserRequest) returns (RegisterUserResponse);
+
+
+}
